@@ -105,7 +105,7 @@ class PCA9685:
 
 class movement_control():
     def __init__(self):
-        self.motor_driver = PCA9685(0x40, debug=False)
+        self.motor_driver = PCA9685(0x40, debug=True)
         self.motor_driver.set_pwm_freq(50)
         self.PWMA = 0
         self.AIN1 = 1
