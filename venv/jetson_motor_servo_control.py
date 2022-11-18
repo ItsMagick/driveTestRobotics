@@ -5,7 +5,7 @@
 
 import time
 import math
-import smbus
+from smbus2 import SMBus
 
 
 class PCA9685:
@@ -27,7 +27,7 @@ class PCA9685:
     __ALLLED_OFF_H       = 0xFD
 
     def __init__(self, address, debug=False):
-        self.bus = smbus.SMBus(1)
+        self.bus = SMBus(1)
         self.address = address
         self.debug = debug
         if self.debug:
@@ -86,7 +86,7 @@ class PCA9685:
             self.set_pwm(channel, 0, 4095)
         else:
             self.set_pwm(channel, 0, 0)
-   
+
     def stop_driver(self):
         self.write(self.__MODE2, 0x00)
         self.bus.close()
@@ -96,7 +96,7 @@ class PCA9685:
         pulse = pulse*4096/20000        #PWM frequency is 50HZ,the period is 20000us
         self.set_pwm(channel, 0, int(pulse))
 
-    def set_rotation_angle(self, channel, angle): 
+    def set_rotation_angle(self, channel, angle):
         if(angle >= 28 and angle <= 135):
             temp = angle * (2000 / 180) + 525
             self.set_servo_pulse(channel, temp)
@@ -117,7 +117,7 @@ class movement_control():
     def set_speed_direction(self, speed, direction):
         speed = speed * -1
         direction = direction * -1
-        if direction >= 0: # turn right, angle is from 85 to 130 
+        if direction >= 0: # turn right, angle is from 85 to 130
             self.motor_driver.set_rotation_angle(channel = 8, angle = 86 + (direction * 23))
         else: # turn left, angle is from 85 to 33
             self.motor_driver.set_rotation_angle(channel = 8, angle = 86 + (direction * 18))
