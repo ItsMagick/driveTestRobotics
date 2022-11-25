@@ -22,6 +22,7 @@ async def remote_car_control():
 
 my_movement_control = MovementControl()
 
+print('Ready for input')
 futures = [remote_car_control()]
 loop = asyncio.get_event_loop()
 loop.run_until_complete(asyncio.wait(futures))

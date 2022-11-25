@@ -7,11 +7,14 @@ from adafruit_servokit import ServoKit
 
 class MovementControl:
     def __init__(self):
+        print('Init Motor Control')
+        print('Connecting to I2C Bus, please wait...')
         self.i2c = busio.I2C(SCL_1, SDA_1)
         self.pca = PCA9685(self.i2c, address=0x40)
         self.kit = ServoKit(channels=16, i2c=self.i2c)
         self.motor = self.kit.continuous_servo[0]
         self.servo = self.kit.servo[1]
+        print('Connected to I2C Bus, setting up hardware...')
         self.setup_hardware()
 
     def setup_hardware(self):
