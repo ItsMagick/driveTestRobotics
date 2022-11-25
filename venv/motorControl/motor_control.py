@@ -39,6 +39,6 @@ class MovementControl:
                 time.sleep(1/10)
                 self.motor.throttle = speed
             if speed > 0:
-                self.motor = speed
+                self.motor.throttle = speed
 
 
