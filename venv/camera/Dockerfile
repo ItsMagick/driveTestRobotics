@@ -1,10 +1,17 @@
 FROM python:3.6
 WORKDIR /usr/scripts/herbie
-RUN apt-get update
 
-RUN apt-get -y install cmake protobuf-compiler
+RUN apt-get update \
+ && apt-get install --assume-yes --no-install-recommends --quiet \
+    ca-certificates \
+    cmake \
+    git \
+    g++ \
+    make \
+    libzip-dev \
+    libssl-dev \
+ && apt-get clean all
 
-RUN apt install libssl-dev -y
 RUN wget https://github.com/IntelRealSense/librealsense/archive/refs/tags/v2.48.0.zip
 RUN unzip v2.48.0.zip
 RUN cd librealsense-2.48.0
