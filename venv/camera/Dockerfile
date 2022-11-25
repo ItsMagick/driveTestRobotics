@@ -11,9 +11,11 @@ RUN mkdir build && cd build
 RUN export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64
 RUN export PATH=$PATH:$CUDA_HOME/bin
 
-RUN cmake ../ -DFORCE_RSUSB_BACKEND=ON -DBUILD_PYTHON_BINDINGS:bool=true -DPYTHON_EXECUTABLE=/usr/bin/python3
 RUN make -j4
 RUN make install
+
+RUN cmake ../ -DFORCE_RSUSB_BACKEND=ON -DBUILD_PYTHON_BINDINGS:bool=true -DPYTHON_EXECUTABLE=/usr/bin/python3
+
 RUN export PYTHONPATH=$PYTHONPATH:/usr/local/lib/python3.6/pyrealsense2
 
 RUN cp config/99-realsense-libusb.rules /etc/udev/rules.d/
