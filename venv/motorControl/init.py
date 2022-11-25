@@ -22,11 +22,13 @@ async def remote_car_control():
             if int(key) is not None:
                 print('Speed for seconds ', int(key))
                 my_movement_control.set_speed(0.3)
-                time.sleep(0.5*int(key))
+                time.sleep(0.5 * int(key))
                 my_movement_control.set_speed(0)
+        except:
+            print("Not number")
+
         finally:
             await asyncio.sleep(0)
-
 
 
 my_movement_control = MovementControl()
