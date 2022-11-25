@@ -1,4 +1,5 @@
 import asyncio
+import time
 
 from motor_control import MovementControl
 
@@ -10,6 +11,9 @@ async def remote_car_control():
         if key == 'w':
             print('forward')
             my_movement_control.set_direction(0)
+            my_movement_control.set_speed(0.3)
+            time.sleep(1)
+            my_movement_control.set_speed(0)
         if key == 'a':
             print('left')
             my_movement_control.set_direction(-1)
