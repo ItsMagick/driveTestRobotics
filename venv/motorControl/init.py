@@ -18,17 +18,21 @@ async def remote_car_control():
             print('right')
             my_movement_control.set_direction(1)
 
-        try:
-            if int(key) is not None:
-                print('Speed for seconds ', int(key))
-                my_movement_control.set_speed(0.3)
-                time.sleep(0.5 * int(key))
-                my_movement_control.set_speed(0)
-        except:
-            print("Not number")
+        if key == 'dir':
+            print('Enter direction from -1 to 1')
+            my_movement_control.set_direction(float(input()))
 
-        finally:
-            await asyncio.sleep(0)
+        if key == 'speed':
+            print('Enter Speed level from 0 to 1')
+            speed = float(input())
+            print('Enter duration in seconds as float')
+            duration = float(input())
+
+            my_movement_control.set_speed(speed)
+            time.sleep(duration)
+            my_movement_control.set_speed(0)
+
+        await asyncio.sleep(0)
 
 
 my_movement_control = MovementControl()
