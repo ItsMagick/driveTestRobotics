@@ -8,5 +8,5 @@
 /dataSources.local.xml
 # created by virtualenv automatically
 .idea/
-/venv/camera/librealsense2.storage
-/venv/camera/pyrealsense2.storage
+venv/camera/librealsense2.so
+venv/camera/pyrealsense2.so
