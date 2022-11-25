@@ -1,6 +1,5 @@
-from ctypes import *
-# either
-rs = cdll.LoadLibrary("pyrealsense2.so")
+#!/usr/bin/python3.6
+import pyrealsense2 as rs
 
 pipe = rs.pipeline()
 profile = pipe.start()
