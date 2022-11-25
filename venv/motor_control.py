@@ -23,9 +23,9 @@ class MovementControl:
         if (direction >= -1.0) & (direction <= 1.0):
             angle = 90
             if direction < 0:
-                angle = 90 - (direction * -1.0 * 50)
+                angle = 90 + (direction * -1.0 * 50)
             if direction > 0:
-                angle = 90 + (direction * 50)
+                angle = 90 - (direction * 50)
             self.servo.angle = angle
             print('Set angle', angle)
 
