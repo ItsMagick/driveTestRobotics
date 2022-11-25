@@ -23,7 +23,7 @@ async def remote_car_control():
             my_movement_control.set_direction(float(input()))
 
         if key == 'speed':
-            print('Enter Speed level from 0 to 1')
+            print('Enter Speed level from -1 to 1')
             speed = float(input())
             print('Enter duration in seconds as float')
             duration = float(input())
