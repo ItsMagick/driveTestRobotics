@@ -32,7 +32,7 @@ try:
         depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(depth_image, alpha=0.03), cv2.COLORMAP_JET)
 
         #Get Demo Position Depth
-        depth = depth_image[320,240].astype(float)*depth_scale
+        depth = depth_image[320,160].astype(float)*depth_scale
 
         cv2.imshow('rgb', color_image)
         cv2.imshow('depth', depth_colormap)
