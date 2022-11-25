@@ -11,16 +11,17 @@ async def remote_car_control():
         if key == 'w':
             print('forward')
             my_movement_control.set_direction(0)
-            my_movement_control.set_speed(0.3)
-            time.sleep(1)
-            my_movement_control.set_speed(0)
         if key == 'a':
             print('left')
             my_movement_control.set_direction(-1)
         if key == 'd':
             print('right')
             my_movement_control.set_direction(1)
-
+        if int(key) is not None:
+            print('Speed for seconds ', int(key))
+            my_movement_control.set_speed(0.3)
+            time.sleep(0.5*int(key))
+            my_movement_control.set_speed(0)
         await asyncio.sleep(0)
 
 
