@@ -24,9 +24,9 @@ async def remote_car_control():
                 my_movement_control.set_speed(0.3)
                 time.sleep(0.5*int(key))
                 my_movement_control.set_speed(0)
-        except:
+        finally:
+            await asyncio.sleep(0)
 
-        await asyncio.sleep(0)
 
 
 my_movement_control = MovementControl()
