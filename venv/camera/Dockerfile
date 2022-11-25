@@ -2,7 +2,7 @@ FROM python:3.6
 WORKDIR /usr/scripts/herbie
 RUN apt-get update
 
-RUN apt install libssl-dev
+RUN apt install libssl-dev -y
 RUN wget https://github.com/IntelRealSense/librealsense/archive/refs/tags/v2.48.0.zip
 RUN unzip v2.48.0.zip
 RUN cd librealsense-2.48.0
