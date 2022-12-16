@@ -1,7 +1,7 @@
 from inputs import get_gamepad
 import math
 import threading
-from ..motorControl.motor_control import MovementControl
+from motor_control import MovementControl
 
 class XboxController(object):
     MAX_TRIG_VAL = math.pow(2, 8)
