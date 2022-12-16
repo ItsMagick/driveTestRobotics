@@ -7,6 +7,9 @@ from controller import xinput_controller
 
 async def remote_car_control():
     while True:
+        if controller.B:
+            moveControl.set_speed(0)
+            exit()
         controllerObserver()
         #keyObserver()
 
