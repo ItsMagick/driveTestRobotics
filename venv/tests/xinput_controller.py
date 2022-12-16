@@ -1,6 +1,7 @@
 from inputs import get_gamepad
 import math
 import threading
+from ..motorControl.motor_control import MovementControl
 
 class XboxController(object):
     MAX_TRIG_VAL = math.pow(2, 8)
@@ -93,5 +94,7 @@ class XboxController(object):
 
 if __name__ == '__main__':
     joy = XboxController()
+    control = MovementControl()
     while True:
-        print(joy.read())
+        control.set_speed(joy.RightTrigger)
+        control.set_direction(joy.LeftJoystickX)
