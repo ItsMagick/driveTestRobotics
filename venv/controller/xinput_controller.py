@@ -48,6 +48,7 @@ class XboxController:
         while True:
             events = get_gamepad()
             for event in events:
+                print(event.code)
                 if event.code == 'ABS_Y':
                     self.LeftJoystickY = event.state / XboxController.MAX_JOY_VAL # normalize between -1 and 1
                 elif event.code == 'ABS_X':

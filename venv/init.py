@@ -4,24 +4,40 @@ import time
 from motorControl import motor_control
 from controller import xinput_controller
 
+mode = "stop"
+
 
 async def remote_car_control():
+    global mode
     while True:
         if controller.B:
+            mode = "stop"
+        if controller.A:
+            mode = "voice"
+        if controller.Y:
+            mode = "controller"
+
+        print("Mode:" + mode)
+
+        if mode == "stop":
             moveControl.set_speed(0)
-            exit()
-        controllerObserver()
-        #keyObserver()
+
+        if mode == "controller":
+            controller_observer()
+
+        #key_observer()
 
         await asyncio.sleep(0.1)
 
-def controllerObserver():
+
+def controller_observer():
     moveControl.set_speed(controller.RightTrigger / 2)
     moveControl.set_direction(controller.LeftJoystickX)
 
-async def keyObserver():
+
+async def key_observer():
     key = input()
-    
+
     if key == 'w':
         print('forward')
         moveControl.set_direction(0)
@@ -45,8 +61,6 @@ async def keyObserver():
         moveControl.set_speed(speed)
         time.sleep(duration)
         moveControl.set_speed(0)
-
-
 
 moveControl = motor_control.MovementControl()
 controller = xinput_controller.XboxController()
