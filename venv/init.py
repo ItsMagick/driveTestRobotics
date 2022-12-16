@@ -1,41 +1,52 @@
 import asyncio
 import time
 
-from motorControl import MovementControl
+from motorControl import motor_control
+from controller import xinput_controller
 
 
 async def remote_car_control():
     while True:
-        key = input()
+        controllerObserver()
+        #keyObserver()
 
-        if key == 'w':
-            print('forward')
-            my_movement_control.set_direction(0)
-        if key == 'a':
-            print('left')
-            my_movement_control.set_direction(-1)
-        if key == 'd':
-            print('right')
-            my_movement_control.set_direction(1)
+        await asyncio.sleep(0.1)
 
-        if key == 'dir':
-            print('Enter direction from -1 to 1')
-            my_movement_control.set_direction(float(input()))
+def controllerObserver():
+    moveControl.set_speed(controller.RightTrigger / 2)
+    moveControl.set_direction(controller.LeftJoystickX)
 
-        if key == 'speed':
-            print('Enter Speed level from -1 to 1')
-            speed = float(input())
-            print('Enter duration in seconds as float')
-            duration = float(input())
+async def keyObserver():
+    key = input()
+    
+    if key == 'w':
+        print('forward')
+        moveControl.set_direction(0)
+    if key == 'a':
+        print('left')
+        moveControl.set_direction(-1)
+    if key == 'd':
+        print('right')
+        moveControl.set_direction(1)
 
-            my_movement_control.set_speed(speed)
-            time.sleep(duration)
-            my_movement_control.set_speed(0)
+    if key == 'dir':
+        print('Enter direction from -1 to 1')
+        moveControl.set_direction(float(input()))
 
-        await asyncio.sleep(0)
+    if key == 'speed':
+        print('Enter Speed level from -1 to 1')
+        speed = float(input())
+        print('Enter duration in seconds as float')
+        duration = float(input())
+
+        moveControl.set_speed(speed)
+        time.sleep(duration)
+        moveControl.set_speed(0)
 
 
-my_movement_control = MovementControl()
+
+moveControl = motor_control.MovementControl()
+controller = xinput_controller.XboxController()
 
 print('Ready for input')
 futures = [remote_car_control()]

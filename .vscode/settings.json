@@ -1,3 +1,7 @@
 {
-    "python.defaultInterpreterPath": "python3"
+    "python.defaultInterpreterPath": "python3",
+    "python.analysis.extraPaths": [
+        "./venv/motorControl",
+        "./venv/controller"
+    ]
 }

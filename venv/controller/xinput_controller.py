@@ -2,9 +2,8 @@ from inputs import get_gamepad
 import time
 import math
 import threading
-from motor_control import MovementControl
 
-class XboxController(object):
+class XboxController:
     MAX_TRIG_VAL = math.pow(2, 8)
     MAX_JOY_VAL = math.pow(2, 15)
 
@@ -90,13 +89,3 @@ class XboxController(object):
                 elif event.code == 'BTN_TRIGGER_HAPPY4':
                     self.DownDPad = event.state
 
-
-
-
-if __name__ == '__main__':
-    joy = XboxController()
-    control = MovementControl()
-    while True:
-        time.sleep(0.1)
-        control.set_speed(joy.RightTrigger / 2)
-        control.set_direction(joy.LeftJoystickX)
