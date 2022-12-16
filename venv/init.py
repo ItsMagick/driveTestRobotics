@@ -1,5 +1,6 @@
 import asyncio
 import time
+import os
 
 from motorControl import motor_control
 from controller import xinput_controller
@@ -29,6 +30,9 @@ class Main:
                 self.mode = "shutdown"
 
             print("Mode:" + self.mode)
+
+            if self.mode == "shutdown":
+                os.system("sudo shutdown now -h")
 
             if self.mode == "stop":
                 self.moveControl.set_speed(0)
