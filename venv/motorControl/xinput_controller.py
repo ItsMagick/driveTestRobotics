@@ -1,4 +1,5 @@
 from inputs import get_gamepad
+import time
 import math
 import threading
 from motor_control import MovementControl
@@ -96,5 +97,6 @@ if __name__ == '__main__':
     joy = XboxController()
     control = MovementControl()
     while True:
-        control.set_speed(joy.RightTrigger)
+        time.sleep(0.1)
+        control.set_speed(joy.RightTrigger / 2)
         control.set_direction(joy.LeftJoystickX)
