@@ -23,3 +23,7 @@ WantedBy = multi-user.target
 sudo systemctl enable herbieStartup.service
 sudo systemctl daemon-reload
 sudo systemctl restart herbieStartup.service
+
+
+python3 -m pip install pvporcupine
+
