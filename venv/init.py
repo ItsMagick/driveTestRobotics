@@ -13,7 +13,7 @@ class Main:
     def __init__(self):
         self.moveControl = motor_control.MovementControl()
         self.controller = xinput_controller.XboxController()
-        self.mode = "stop"
+        self.mode = "voice"
         print('Ready for input')
         futures = [self.remote_car_control()]
         loop = asyncio.get_event_loop()
