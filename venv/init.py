@@ -6,6 +6,7 @@ import os
 
 from motorControl import motor_control
 from controller import xinput_controller
+# from voice import porcupine_test
 
 
 class Main:
@@ -13,6 +14,7 @@ class Main:
     def __init__(self):
         self.moveControl = motor_control.MovementControl()
         self.controller = xinput_controller.XboxController()
+        # self.voice = porcupine_test.PorcupineRecording()
         self.mode = "voice"
         print('Ready for input')
         futures = [self.remote_car_control()]
@@ -33,6 +35,9 @@ class Main:
 
             if self.mode == "stop":
                 self.moveControl.set_speed(0)
+
+            #if self.mode == "voice":
+                # self.voice.show_audio_devices()
 
             if self.mode == "controller":
                 self.controller_observer()
