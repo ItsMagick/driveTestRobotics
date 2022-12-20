@@ -32,11 +32,11 @@ class Main:
                 self.mode = "controller"
             if self.controller.Back == 1:
                 self.mode = "shutdown"
-            if self.controller.X == 1:
+            if self.controller.RightJoystickX < -0.9:
                 self.move_car_left()
-            if self.controller.RightDPad == 1:
+            if self.controller.RightJoystickX > 0.9:
                 self.move_car_right()
-            if self.controller.DownDPad == 1:
+            if self.controller.RightJoystickY < -0.9:
                 self.move_car_reverse()
 
             print("Mode:" + self.mode)
