@@ -65,8 +65,12 @@ class Main:
             await asyncio.sleep(0.1)
 
     def controller_observer(self):
-        self.moveControl.set_speed(self.controller.LeftTrigger / -4)
-        self.moveControl.set_speed(self.controller.RightTrigger / 2)
+        if self.controller.LeftTrigger > 0:
+            self.moveControl.set_speed(self.controller.LeftTrigger / -4)
+        elif self.controller.RightTrigger > 0:
+            self.moveControl.set_speed(self.controller.RightTrigger / 4)
+        else:
+            self.moveControl.set_speed(0)
         self.moveControl.set_direction(self.controller.LeftJoystickX)
 
     def move_car_left(self):
