@@ -30,11 +30,16 @@ class Main:
                 self.mode = "voice"
             if self.controller.Y == 1:
                 self.mode = "controller"
+            if self.controller.Back == 1:
+                self.mode = "shutdown"
 
             print("Mode:" + self.mode)
 
             if self.mode == "stop":
                 self.moveControl.set_speed(0)
+
+            if self.mode == "shutdown":
+                os.system("sudo shutdown now -h")
 
             #if self.mode == "voice":
                 # self.voice.show_audio_devices()
