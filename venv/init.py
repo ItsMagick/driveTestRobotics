@@ -6,7 +6,7 @@ import os
 
 from motorControl import motor_control
 from controller import xinput_controller
-from pixel_ring import led_control
+from ledControl import led_control
 # from voice import porcupine_test
 
 
@@ -35,7 +35,7 @@ class Main:
             if self.controller.Y == 1:
                 self.mode = "controller"
                 self.ledControl.set_green()
-            if self.controller.Back == 1:
+            if self.controller.Back == 1 & self.mode == "stop":
                 self.mode = "shutdown"
 
             if self.controller.RightJoystickX < -0.9:
@@ -58,7 +58,6 @@ class Main:
 
             if self.mode == "controller":
                 self.controller_observer()
-                pixel_ring.customize()
 
             # key_observer()
 
