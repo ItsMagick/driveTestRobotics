@@ -45,7 +45,7 @@ class Main:
                 self.moveControl.set_speed(0)
 
             if self.mode == "shutdown":
-                os.system("shutdown")
+                os.system("shutdown now")
 
             #if self.mode == "voice":
                 # self.voice.show_audio_devices()
