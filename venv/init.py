@@ -36,13 +36,15 @@ class Main:
             if self.controller.Y == 1:
                 self.mode = "controller"
                 self.ledControl.set_green()
-            if (self.controller.Back == 1) & (self.mode == "stop"):
-                self.mode = "shutdown"
 
             print("Mode:" + self.mode)
 
             if self.mode == "stop":
                 self.moveControl.set_speed(0)
+                if self.controller.Back == 1:
+                    self.mode = "shutdown"
+                if self.controller.Start == 1:
+                    os.system("systemctl restart herbieStartup.service")
 
             if self.mode == "shutdown":
                 os.system("shutdown now")
