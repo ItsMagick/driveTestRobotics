@@ -32,8 +32,13 @@ class Main:
                 self.mode = "controller"
             if self.controller.Back == 1:
                 self.mode = "shutdown"
-            if self.controller.X == 1:
-                await self.move_car_90()
+            if self.controller.LeftDPad == 1:
+                await self.move_car_left()
+            if self.controller.RightDPad == 1:
+                await self.move_car_right()
+            if self.controller.DownDPad == 1:
+                await self.move_car_left()
+                await self.move_car_right()
 
             print("Mode:" + self.mode)
 
@@ -58,9 +63,16 @@ class Main:
         self.moveControl.set_speed(self.controller.RightTrigger / 2)
         self.moveControl.set_direction(self.controller.LeftJoystickX)
 
-    async def move_car_90(self):
+    async def move_car_left(self):
         self.moveControl.set_speed(0)
         self.moveControl.set_direction(-1)
+        self.moveControl.set_speed(-0.2)
+        await asyncio.sleep(0.2)
+        self.moveControl.set_speed(0)
+
+    async def move_car_right(self):
+        self.moveControl.set_speed(0)
+        self.moveControl.set_direction(-2)
         self.moveControl.set_speed(-0.2)
         await asyncio.sleep(0.2)
         self.moveControl.set_speed(0)
