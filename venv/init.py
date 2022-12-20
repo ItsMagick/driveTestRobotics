@@ -30,8 +30,10 @@ class Main:
                 self.mode = "voice"
             if self.controller.Y == 1:
                 self.mode = "controller"
+                pixel_ring.pixel_ring.set_color(None, 200, 0,0)
             if self.controller.Back == 1:
                 self.mode = "shutdown"
+
             if self.controller.RightJoystickX < -0.9:
                 self.move_car_left()
             if self.controller.RightJoystickX > 0.9:
