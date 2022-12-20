@@ -32,6 +32,8 @@ class Main:
                 self.mode = "controller"
             if self.controller.Back == 1:
                 self.mode = "shutdown"
+            if self.controller.X == 1:
+                await self.move_car_90()
 
             print("Mode:" + self.mode)
 
@@ -52,8 +54,16 @@ class Main:
             await asyncio.sleep(0.1)
 
     def controller_observer(self):
+        self.moveControl.set_speed(self.controller.LeftTrigger / -4)
         self.moveControl.set_speed(self.controller.RightTrigger / 2)
         self.moveControl.set_direction(self.controller.LeftJoystickX)
+
+    async def move_car_90(self):
+        self.moveControl.set_speed(0)
+        self.moveControl.set_direction(-1)
+        self.moveControl.set_speed(-0.2)
+        await asyncio.sleep(0.2)
+        self.moveControl.set_speed(0)
 
     async def key_observer(self):
         key = input()
