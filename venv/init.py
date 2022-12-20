@@ -66,17 +66,17 @@ class Main:
 
     def move_car_left(self):
         self.moveControl.set_speed(0)
-        self.moveControl.set_direction(-1)
+        self.moveControl.set_direction(1)
         self.moveControl.set_speed(-0.2)
-        time.sleep(0.2)
+        time.sleep(0.8)
         self.moveControl.set_speed(0)
         self.moveControl.set_direction(0)
 
     def move_car_right(self):
         self.moveControl.set_speed(0)
-        self.moveControl.set_direction(1)
+        self.moveControl.set_direction(-1)
         self.moveControl.set_speed(-0.2)
-        time.sleep(0.2)
+        time.sleep(0.8)
         self.moveControl.set_speed(0)
         self.moveControl.set_direction(0)
 
@@ -84,9 +84,9 @@ class Main:
         self.moveControl.set_speed(0)
         self.moveControl.set_direction(-1)
         self.moveControl.set_speed(-0.2)
-        time.sleep(0.2)
+        time.sleep(0.6)
         self.moveControl.set_direction(1)
-        time.sleep(0.2)
+        time.sleep(0.6)
         self.moveControl.set_speed(0)
         self.moveControl.set_direction(0)
 
