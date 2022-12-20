@@ -39,13 +39,6 @@ class Main:
             if (self.controller.Back == 1) & (self.mode == "stop"):
                 self.mode = "shutdown"
 
-            if self.controller.RightJoystickX < -0.9:
-                self.move_car_left()
-            if self.controller.RightJoystickX > 0.9:
-                self.move_car_right()
-            if self.controller.RightJoystickY < -0.9:
-                self.move_car_reverse()
-
             print("Mode:" + self.mode)
 
             if self.mode == "stop":
@@ -59,6 +52,12 @@ class Main:
 
             if self.mode == "controller":
                 self.controller_observer()
+                if self.controller.RightJoystickX < -0.9:
+                    self.move_car_left()
+                if self.controller.RightJoystickX > 0.9:
+                    self.move_car_right()
+                if self.controller.RightJoystickY < -0.9:
+                    self.move_car_reverse()
 
             # key_observer()
 
@@ -76,26 +75,35 @@ class Main:
     def move_car_left(self):
         self.moveControl.set_speed(0)
         self.moveControl.set_direction(1)
-        self.moveControl.set_speed(-0.2)
-        time.sleep(0.8)
+        self.moveControl.set_speed(-0.25)
+        time.sleep(1.4)
+        self.moveControl.set_speed(0)
+        time.sleep(0.2)
+        self.moveControl.set_speed(0.2)
+        time.sleep(0.2)
         self.moveControl.set_speed(0)
         self.moveControl.set_direction(0)
 
     def move_car_right(self):
         self.moveControl.set_speed(0)
         self.moveControl.set_direction(-1)
-        self.moveControl.set_speed(-0.2)
-        time.sleep(0.8)
+        self.moveControl.set_speed(-0.25)
+        time.sleep(1.4)
+        self.moveControl.set_speed(0)
+        time.sleep(0.2)
+        self.moveControl.set_speed(0.2)
+        time.sleep(0.2)
         self.moveControl.set_speed(0)
         self.moveControl.set_direction(0)
 
     def move_car_reverse(self):
         self.moveControl.set_speed(0)
         self.moveControl.set_direction(-1)
-        self.moveControl.set_speed(-0.2)
-        time.sleep(0.6)
+        self.moveControl.set_speed(-0.25)
+        time.sleep(1)
         self.moveControl.set_direction(1)
-        time.sleep(0.6)
+        self.moveControl.set_speed(0.2)
+        time.sleep(1)
         self.moveControl.set_speed(0)
         self.moveControl.set_direction(0)
 
