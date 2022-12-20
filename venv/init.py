@@ -17,7 +17,8 @@ class Main:
         self.controller = xinput_controller.XboxController()
         self.ledControl = led_control.LedControl()
         # self.voice = porcupine_test.PorcupineRecording()
-        self.mode = "voice"
+        self.mode = "stop"
+        self.ledControl.set_red()
         print('Ready for input')
         futures = [self.remote_car_control()]
         loop = asyncio.get_event_loop()
@@ -35,7 +36,7 @@ class Main:
             if self.controller.Y == 1:
                 self.mode = "controller"
                 self.ledControl.set_green()
-            if self.controller.Back == 1 & self.mode == "stop":
+            if (self.controller.Back == 1) & (self.mode == "stop"):
                 self.mode = "shutdown"
 
             if self.controller.RightJoystickX < -0.9:
