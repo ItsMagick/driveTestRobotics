@@ -1,10 +1,18 @@
-
 from usb_pixel_ring_v2 import PixelRing
 import usb.core
 import usb.util
 
-dev = usb.core.find(idVendor=0x2886, idProduct=0x0018)
-print(dev)
-if dev:
-    pixel_ring = PixelRing(dev)
-    pixel_ring.set_color(None, 200, 0,0)
+
+class LedControl:
+    def __init__(self):
+        self.dev = usb.core.find(idVendor=0x2886, idProduct=0x0018)
+        self.pixel_ring = PixelRing(self.dev)
+
+    def set_red(self):
+        self.pixel_ring.set_color(None, 255, 0, 0)
+
+    def set_green(self):
+        self.pixel_ring.set_color(None, 0, 255, 0)
+
+    def set_voice(self):
+        self.pixel_ring.listen()

@@ -6,6 +6,7 @@ import os
 
 from motorControl import motor_control
 from controller import xinput_controller
+from pixel_ring import led_control
 # from voice import porcupine_test
 
 
@@ -14,6 +15,7 @@ class Main:
     def __init__(self):
         self.moveControl = motor_control.MovementControl()
         self.controller = xinput_controller.XboxController()
+        self.ledControl = led_control.LedControl()
         # self.voice = porcupine_test.PorcupineRecording()
         self.mode = "voice"
         print('Ready for input')
@@ -26,11 +28,13 @@ class Main:
         while True:
             if self.controller.B == 1:
                 self.mode = "stop"
+                self.ledControl.set_red()
             if self.controller.A == 1:
                 self.mode = "voice"
+                self.ledControl.set_voice()
             if self.controller.Y == 1:
                 self.mode = "controller"
-                pixel_ring.pixel_ring.set_color(None, 200, 0,0)
+                self.ledControl.set_green()
             if self.controller.Back == 1:
                 self.mode = "shutdown"
 
@@ -54,6 +58,7 @@ class Main:
 
             if self.mode == "controller":
                 self.controller_observer()
+                pixel_ring.customize()
 
             # key_observer()
 
