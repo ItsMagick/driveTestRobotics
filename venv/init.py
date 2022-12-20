@@ -37,8 +37,7 @@ class Main:
             if self.controller.RightDPad == 1:
                 await self.move_car_right()
             if self.controller.DownDPad == 1:
-                await self.move_car_left()
-                await self.move_car_right()
+                await self.move_car_reverse()
 
             print("Mode:" + self.mode)
 
@@ -69,13 +68,25 @@ class Main:
         self.moveControl.set_speed(-0.2)
         await asyncio.sleep(0.2)
         self.moveControl.set_speed(0)
+        self.moveControl.set_direction(0)
 
     async def move_car_right(self):
         self.moveControl.set_speed(0)
-        self.moveControl.set_direction(-2)
+        self.moveControl.set_direction(1)
         self.moveControl.set_speed(-0.2)
         await asyncio.sleep(0.2)
         self.moveControl.set_speed(0)
+        self.moveControl.set_direction(0)
+
+    async def move_car_reverse(self):
+        self.moveControl.set_speed(0)
+        self.moveControl.set_direction(-1)
+        self.moveControl.set_speed(-0.2)
+        await asyncio.sleep(0.2)
+        self.moveControl.set_direction(1)
+        await asyncio.sleep(0.2)
+        self.moveControl.set_speed(0)
+        self.moveControl.set_direction(0)
 
     async def key_observer(self):
         key = input()
