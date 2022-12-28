@@ -6,7 +6,7 @@ import wave
 import os
 import argparse
 import struct
-from datetime import datetime
+from datetime import *
 from threading import Thread
 import pvporcupine
 from pvrecorder import PvRecorder
@@ -17,7 +17,13 @@ class VoiceDetection:
     def __init__(self):
         self.wav_file = None
         mic = usb.core.find(idVendor=0x2886, idProduct=0x0018)
-        self.tuner = tuning.Tuning(dev)
+        self.tuner = tuning.Tuning(mic)
+
+        porcupine = pvporcupine.create(
+            access_key='nzah8bgrstj0FbW+BTI7qeGM1qF3MTi+jmqtHfn69Q+gT7MKoxgRfg==',
+            keyword_paths=['venv/voice/Herbie-follow-me_en_jetson_v2_1_0.ppn']
+        )
+
         self.recorder = PvRecorder(device_index=0, frame_length=porcupine.frame_length)
         self.recorder.start()
 
@@ -27,11 +33,17 @@ class VoiceDetection:
                 if self.tuner.is_voice():
                     if self.current is None:
                         self.startRecording()
-                        self.current = datetime.now()
+                    self.current = datetime.now()
 
-
+                if datetime.now() > (self.current + timedelta(seconds=1)):
+                    self.wav_file.close()
+                    print("Recorded Snippet")
+                    #TODO: Analyse
+                else:
                     pcm = self.recorder.read()
-                    self.wav_file.writeframes(struct.pack("h" * len(pcm), *pcm))
+                    if self.wav_file is not None:
+                        self.wav_file.writeframes(struct.pack("h" * len(pcm), *pcm))
+
             finally:
                 if self.recorder is not None:
                     self.recorder.delete()
