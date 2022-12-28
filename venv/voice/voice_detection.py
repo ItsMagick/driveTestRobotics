@@ -29,7 +29,7 @@ class VoiceDetection:
                         self.start_recording()
                     self.current = datetime.now()
 
-                if datetime.now() > (self.current + timedelta(seconds=1)):
+                if (self.current is not None) & (datetime.now() > (self.current + timedelta(seconds=1))):
                     self.kill()
                     wv.write(self.temp_file_name, self.recorder, 44100, sampwidth=2)
 
