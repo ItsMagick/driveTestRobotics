@@ -1,4 +1,5 @@
 Es wird vorausgesetzt, dass das Repo driveTestsRobotics im Dokumente Ordner liegt.
+Libraries müssen für root installiert werden! Service ist Root
 
 sudo apt install nano
 sudo apt install python3.8
@@ -16,7 +17,7 @@ Description = Herbie Python Startup
 Type = idle
 ExecStartPre = /bin/sleep 10
 ExecStart = /home/herbie/Documents/driveTestRobotics/venv/init.py
-User=herbie
+User=root
 [Install]
 WantedBy = multi-user.target
 
@@ -25,7 +26,14 @@ sudo systemctl daemon-reload
 sudo systemctl restart herbieStartup.service
 
 
-python3 -m pip install pvporcupine
-
 sudo apt-get install portaudio19-dev python-all-dev python3-all-dev
 sudo apt-get install python3-pyaudio
+
+sudo apt-get install libffi6 libffi-dev
+sudo apt install libpython3.8-dev
+
+python3 -m pip install sounddevice
+
+python3 -m pip install Cython
+
+python3 -m pip install wavio
