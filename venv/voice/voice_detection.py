@@ -8,7 +8,8 @@ import argparse
 import struct
 from datetime import *
 from threading import Thread
-from pvrecorder import PvRecorder
+import sounddevice as sd
+import wavio as wv
 
 class VoiceDetection:
     temp_file_name = "./temp.wav"
@@ -20,41 +21,31 @@ class VoiceDetection:
 
         self.recorder = None
 
-    def start(self):
-        self.recorder = PvRecorder(device_index=0)
-        self.recorder.start()
-
-    def runObserver(self):
+    def run_Observer(self):
         while True:
             try:
                 if self.tuner.is_voice():
                     if self.current is None:
-                        self.startRecording()
+                        self.start_recording()
                     self.current = datetime.now()
 
                 if datetime.now() > (self.current + timedelta(seconds=1)):
-                    self.wav_file.close()
+                    self.kill()
+                    wv.write(self.temp_file_name, self.recorder, 44100, sampwidth=2)
+
                     print("Recorded Snippet")
                     #TODO: Analyse
-                else:
-                    pcm = self.recorder.read()
-                    if self.wav_file is not None:
-                        self.wav_file.writeframes(struct.pack("h" * len(pcm), *pcm))
 
             finally:
                 self.kill()
-    def startRecording(self):
+
+    def start_recording(self):
         if os.path.exists(self.temp_file_name):
             os.remove(self.temp_file_name)
 
-        self.wav_file = wave.open(self.temp_file_name, "w")
-        self.wav_file.setparams((1, 2, 16000, 512, "NONE", "NONE"))
+        self.recorder = sd.rec(int(6 * 44100),
+                           samplerate=44100, channels=2)
 
     def kill(self):
-        if self.recorder is not None:
-            self.recorder.delete()
-
-        if self.wav_file is not None:
-            self.wav_file.close()
-
-
+        sd.stop()
+        self.current = None
