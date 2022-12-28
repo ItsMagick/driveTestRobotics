@@ -29,12 +29,13 @@ class VoiceDetection:
                         self.start_recording()
                     self.current = datetime.now()
 
-                if (self.current is not None) & (datetime.now() > (self.current + timedelta(seconds=1))):
-                    self.kill()
-                    wv.write(self.temp_file_name, self.recorder, 44100, sampwidth=2)
+                if self.current is not None:
+                    if datetime.now() > (self.current + timedelta(seconds=1)):
+                        self.kill()
+                        wv.write(self.temp_file_name, self.recorder, 44100, sampwidth=2)
 
-                    print("Recorded Snippet")
-                    #TODO: Analyse
+                        print("Recorded Snippet")
+                        #TODO: Analyse
 
             finally:
                 self.kill()
