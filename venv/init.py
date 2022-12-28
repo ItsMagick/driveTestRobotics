@@ -4,10 +4,10 @@ import asyncio
 import time
 import os
 
-from movement import motor_control
-from movement import movement_control
 from controller import xbox_controller
 from led import led_control
+from movement import movement_control
+from movement import motor_control
 from voice import voice_detection
 
 class Main:

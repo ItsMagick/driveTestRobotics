@@ -1,6 +1,6 @@
 import time
 
-import motor_control
+from . import motor_control
 
 class MovementControl:
     def __init__(self):

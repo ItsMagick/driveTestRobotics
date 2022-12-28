@@ -10,3 +10,7 @@
 .idea/
 venv/camera/librealsense2.so
 venv/camera/pyrealsense2.so
+venv/voice/__pycache__
+venv/movement/__pycache__
+venv/led/__pycache__
+venv/controller/__pycache__
