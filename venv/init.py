@@ -52,7 +52,7 @@ class Main:
                 os.system("shutdown now")
 
             if self.mode == "voice":
-                self.voice.run_Observer()
+                self.voice.start()
             else:
                 self.voice.kill()
 
