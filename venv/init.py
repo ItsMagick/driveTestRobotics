@@ -8,8 +8,7 @@ from movement import motor_control
 from movement import movement_control
 from controller import xbox_controller
 from led import led_control
-# from voice import porcupine_test
-
+from voice import voice_detection
 
 class Main:
 
@@ -18,6 +17,7 @@ class Main:
         self.movement = movement_control.MovementControl()
         self.controller = xbox_controller.XboxController()
         self.ledControl = led_control.LedControl()
+        self.voice = voice_detection.VoiceDetection()
         # self.voice = porcupine_test.PorcupineRecording()
         self.mode = "stop"
         self.ledControl.set_red()
@@ -51,8 +51,11 @@ class Main:
             if self.mode == "shutdown":
                 os.system("shutdown now")
 
-            #if self.mode == "voice":
-                # self.voice.show_audio_devices()
+            if self.mode == "voice":
+                self.voice.start()
+                self.voice.runObserver()
+            else:
+                self.voice.kill()
 
             if self.mode == "controller":
                 self.controller_observer()
