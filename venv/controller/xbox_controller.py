@@ -7,7 +7,6 @@ class XboxController:
     MAX_JOY_VAL = math.pow(2, 15)
 
     def __init__(self):
-
         self.LeftJoystickY = 0
         self.LeftJoystickX = 0
         self.RightJoystickY = 0
@@ -33,7 +32,6 @@ class XboxController:
         self._monitor_thread.daemon = True
         self._monitor_thread.start()
 
-
     def read(self): # return the buttons/triggers that you care about in this methode
         x = self.LeftJoystickX
         y = self.LeftJoystickY
@@ -41,7 +39,6 @@ class XboxController:
         b = self.X # b=1, x=2
         rb = self.RightBumper
         return [x, y, a, b, rb]
-
 
     def _monitor_controller(self):
         while True:
@@ -88,4 +85,3 @@ class XboxController:
                     self.UpDPad = event.state
                 elif event.code == 'BTN_TRIGGER_HAPPY4':
                     self.DownDPad = event.state
-

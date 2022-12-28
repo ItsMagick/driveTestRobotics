@@ -5,7 +5,7 @@ from adafruit_pca9685 import PCA9685
 from adafruit_servokit import ServoKit
 
 
-class MovementControl:
+class MotorControl:
     def __init__(self):
         self.i2c = busio.I2C(SCL_1, SDA_1)
         self.pca = PCA9685(self.i2c, address=0x40)

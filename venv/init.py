@@ -4,17 +4,19 @@ import asyncio
 import time
 import os
 
-from motorControl import motor_control
-from controller import xinput_controller
-from ledControl import led_control
+from movement import motor_control
+from movement import movement_control
+from controller import xbox_controller
+from led import led_control
 # from voice import porcupine_test
 
 
 class Main:
 
     def __init__(self):
-        self.moveControl = motor_control.MovementControl()
-        self.controller = xinput_controller.XboxController()
+        self.motor = motor_control.MotorControl()
+        self.movement = movement_control.MovementControl()
+        self.controller = xbox_controller.XboxController()
         self.ledControl = led_control.LedControl()
         # self.voice = porcupine_test.PorcupineRecording()
         self.mode = "stop"
@@ -40,7 +42,7 @@ class Main:
             print("Mode:" + self.mode)
 
             if self.mode == "stop":
-                self.moveControl.set_speed(0)
+                self.motor.set_speed(0)
                 if self.controller.Back == 1:
                     self.mode = "shutdown"
                 if self.controller.Start == 1:
@@ -55,11 +57,11 @@ class Main:
             if self.mode == "controller":
                 self.controller_observer()
                 if self.controller.RightJoystickX < -0.9:
-                    self.move_car_left()
+                    self.movement.move_car_left()
                 if self.controller.RightJoystickX > 0.9:
-                    self.move_car_right()
+                    self.movement.move_car_right()
                 if self.controller.RightJoystickY < -0.9:
-                    self.move_car_reverse()
+                    self.movement.move_car_reverse()
 
             # key_observer()
 
@@ -67,64 +69,29 @@ class Main:
 
     def controller_observer(self):
         if self.controller.LeftTrigger > 0:
-            self.moveControl.set_speed(self.controller.LeftTrigger / -4)
+            self.motor.set_speed(self.controller.LeftTrigger / -4)
         elif self.controller.RightTrigger > 0:
-            self.moveControl.set_speed(self.controller.RightTrigger / 4)
+            self.motor.set_speed(self.controller.RightTrigger / 4)
         else:
-            self.moveControl.set_speed(0)
-        self.moveControl.set_direction(self.controller.LeftJoystickX)
-
-    def move_car_left(self):
-        self.moveControl.set_speed(0)
-        self.moveControl.set_direction(1)
-        self.moveControl.set_speed(-0.25)
-        time.sleep(1.4)
-        self.moveControl.set_speed(0)
-        time.sleep(0.2)
-        self.moveControl.set_speed(0.2)
-        time.sleep(0.2)
-        self.moveControl.set_speed(0)
-        self.moveControl.set_direction(0)
-
-    def move_car_right(self):
-        self.moveControl.set_speed(0)
-        self.moveControl.set_direction(-1)
-        self.moveControl.set_speed(-0.25)
-        time.sleep(1.4)
-        self.moveControl.set_speed(0)
-        time.sleep(0.2)
-        self.moveControl.set_speed(0.2)
-        time.sleep(0.2)
-        self.moveControl.set_speed(0)
-        self.moveControl.set_direction(0)
-
-    def move_car_reverse(self):
-        self.moveControl.set_speed(0)
-        self.moveControl.set_direction(-1)
-        self.moveControl.set_speed(-0.25)
-        time.sleep(1)
-        self.moveControl.set_direction(1)
-        self.moveControl.set_speed(0.2)
-        time.sleep(1)
-        self.moveControl.set_speed(0)
-        self.moveControl.set_direction(0)
+            self.motor.set_speed(0)
+        self.motor.set_direction(self.controller.LeftJoystickX)
 
     async def key_observer(self):
         key = input()
 
         if key == 'w':
             print('forward')
-            self.moveControl.set_direction(0)
+            self.motor.set_direction(0)
         if key == 'a':
             print('left')
-            self.moveControl.set_direction(-1)
+            self.motor.set_direction(-1)
         if key == 'd':
             print('right')
-            self.moveControl.set_direction(1)
+            self.motor.set_direction(1)
 
         if key == 'dir':
             print('Enter direction from -1 to 1')
-            self.moveControl.set_direction(float(input()))
+            self.motor.set_direction(float(input()))
 
         if key == 'speed':
             print('Enter Speed level from -1 to 1')
@@ -132,9 +99,9 @@ class Main:
             print('Enter duration in seconds as float')
             duration = float(input())
 
-            self.moveControl.set_speed(speed)
+            self.motor.set_speed(speed)
             time.sleep(duration)
-            self.moveControl.set_speed(0)
+            self.motor.set_speed(0)
 
 
 Main()
