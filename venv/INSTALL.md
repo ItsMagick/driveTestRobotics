@@ -5,6 +5,7 @@ sudo apt install nano
 sudo apt install python3.8
 sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.8 1
 sudo apt install python3-pip
+python3 -m pip install --upgrade pip
 python3 -m pip install adafruit-circuitpython-servokit
 python3 -m pip install inputs
 
@@ -37,3 +38,13 @@ python3 -m pip install sounddevice
 python3 -m pip install Cython
 
 python3 -m pip install wavio
+
+
+python3 -m pip install torch==1.10.0 torchvision==0.11.1 torchaudio==0.10.0 -f https://download.pytorch.org/whl/cpu/torch_stable.html
+python3 -m pip install git+https://github.com/openai/whisper.git --ignore-installed PyYAML
+
+sudo apt update && sudo apt install ffmpeg
+
+
+#For Camera COCO Test
+pip instlal pycocotools
