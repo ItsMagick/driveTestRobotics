@@ -46,5 +46,9 @@ python3 -m pip install git+https://github.com/openai/whisper.git --ignore-instal
 sudo apt update && sudo apt install ffmpeg
 
 
-#For Camera COCO Test
+For Camera COCO Test
 pip instlal pycocotools
+
+pip install imageAI
+
+pip install tk
