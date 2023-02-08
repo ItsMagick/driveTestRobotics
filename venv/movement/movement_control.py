@@ -1,10 +1,9 @@
 import time
-
-from . import motor_control
+import motor_control
 
 class MovementControl:
-    def __init__(self):
-        self.motor = motor_control.MotorControl()
+    def __init__(self, motor: motor_control.MotorControl):
+        self.motor = motor
 
     def move_car_left(self):
         self.motor.set_speed(0)
