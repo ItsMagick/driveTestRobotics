@@ -18,14 +18,29 @@ import io
 
 # Construct the Roboflow Infer URL
 # (if running locally replace https://detect.roboflow.com/ with eg http://127.0.0.1:9001/)
-upload_url = "".join([
-    "http://127.0.0.1:9001/",
-    ROBOFLOW_MODEL,
-    "?api_key=",
-    ROBOFLOW_API_KEY,
-    "&format=image",
-    "&stroke=5"
-])
+parts = []
+url_base = 'http://127.0.0.1:9001/'
+endpoint = ROBOFLOW_MODEL
+access_token = '?access_token='+ROBOFLOW_API_KEY
+format = '&format=json'
+confidence = '&confidence=10'
+stroke='&stroke=5'
+parts.append(url_base)
+parts.append(endpoint)
+parts.append(access_token)
+parts.append(format)
+parts.append(confidence)
+parts.append(stroke)
+url = ''.join(parts)
+
+# upload_url = "".join([
+#     "http://127.0.0.1:9001/",
+#     ROBOFLOW_MODEL,
+#     "?api_key=",
+#     ROBOFLOW_API_KEY,
+#     "&format=image",
+#     "&stroke=5"
+# ])
 
 # Get webcam interface via opencv-python
 video = cv2.VideoCapture(2)
@@ -53,7 +68,7 @@ def infer():
 
     headers = {"accept": "application/json"}
     start = time.time()
-    resp = requests.post(upload_url, data=img_str, headers=headers)
+    resp = requests.post(url, data=img_str, headers=headers)
     print('post took ' + str(time.time() - start))
 
     print(resp.json())
@@ -86,4 +101,4 @@ print((1/(time.time()-start)), " fps")
 
 # Release resources when finished
 video.release()
-cv2.destroyAllWindows()
+#cv2.destroyAllWindows()
