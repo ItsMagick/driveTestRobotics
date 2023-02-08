@@ -3,6 +3,7 @@
 import asyncio
 import time
 import os
+import logging
 
 from controller import xbox_controller
 from led import led_control
@@ -10,8 +11,10 @@ from movement import movement_control
 from movement import motor_control
 from voice import voice_recording
 from voice import voice_detection
+from camera import camera_detection
 
-class Main:
+
+class Main(object):
 
     def __init__(self):
         self.motor = motor_control.MotorControl()
@@ -20,6 +23,7 @@ class Main:
         self.ledControl = led_control.LedControl()
         self.voice_rec = voice_recording.VoiceRecording()
         self.voice_det = voice_detection.VoiceDetection(self.movement)
+        self.camera_det = camera_detection.CameraDetection(self.movement)
         self.mode = "stop"
         self.ledControl.set_red()
         print('Ready for input')
@@ -33,11 +37,14 @@ class Main:
             if self.controller.B == 1:
                 self.mode = "stop"
                 self.ledControl.set_red()
-            if self.controller.A == 1:
+            if self.controller.X == 1:
                 self.mode = "voice"
                 self.ledControl.set_voice()
             if self.controller.Y == 1:
                 self.mode = "controller"
+                self.ledControl.set_yellow()
+            if self.controller.A == 1:
+                self.mode = "camera"
                 self.ledControl.set_green()
 
             if self.mode == "stop":
@@ -54,6 +61,11 @@ class Main:
                 self.voice_det.start()
             else:
                 self.voice_det.kill()
+
+            if self.mode == "camera":
+                self.camera_det.start()
+            else:
+                self.camera_det.kill()
 
             if self.mode == "controller":
                 self.controller_observer()

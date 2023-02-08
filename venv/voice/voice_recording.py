@@ -11,7 +11,7 @@ import threading
 import sounddevice as sd
 import wavio as wv
 
-class VoiceRecording:
+class VoiceRecording(object):
     temp_file_name = "/home/herbie/Desktop/test.wav"
     current = None
     def __init__(self):

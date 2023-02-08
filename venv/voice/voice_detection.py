@@ -5,7 +5,7 @@ import time
 from datetime import datetime, timedelta
 import threading
 
-class VoiceDetection:
+class VoiceDetection(object):
 
     def __init__(self, movement):
         self.movement = movement
