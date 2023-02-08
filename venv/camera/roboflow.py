@@ -58,7 +58,6 @@ def infer():
     # Encode image to base64 string
     retval, buffer = cv2.imencode('.jpg', img)
     img_str = base64.b64encode(buffer)
-    #img_str = img_str.decode("ascii")
 
     # Get prediction from Roboflow Infer API
     r = requests.post(url, data=img_str, headers={
@@ -68,14 +67,44 @@ def infer():
 
     print('RESPONSE: ' + str(r.content))
 
-    #headers = {"accept": "application/json"}
-    #start = time.time()
-    #resp = requests.post(url, data=img_str, headers=headers, stream=True)
-    #print('post took ' + str(time.time() - start))
-
-    #print('RESPONSE: ' + str(resp))
     preds = r.json()
     detections = preds['predictions']
+
+    from PIL import Image, ImageDraw, ImageFont
+    imgdata = base64.b64decode(img_str)
+    filename = 'some_image.jpg'  # I assume you have a way of picking unique filenames
+    with open(filename, 'wb') as f:
+        f.write(imgdata)
+        image2 = Image.open(f)
+
+        draw = ImageDraw.Draw(image2)
+        font = ImageFont.load_default()
+
+        for box in detections:
+            color = "#4892EA"
+            x1 = box['x'] - box['width'] / 2
+            x2 = box['x'] + box['width'] / 2
+            y1 = box['y'] - box['height'] / 2
+            y2 = box['y'] + box['height'] / 2
+
+            draw.rectangle([
+                x1, y1, x2, y2
+            ], outline=color, width=5)
+
+            if True:
+                text = box['class']
+                text_size = font.getsize(text)
+
+                # set button size + 10px margins
+                button_size = (text_size[0] + 20, text_size[1] + 20)
+                button_img = Image.new('RGBA', button_size, color)
+                # put text on button with 10px margins
+                button_draw = ImageDraw.Draw(button_img)
+                button_draw.text((10, 10), text, font=font, fill=(255, 255, 255, 255))
+
+                # put button on source image in position (0, 0)
+                image2.paste(button_img, (int(x1), int(y1)))
+        image2.show()
 
     # Parse result image
     #image = np.asarray(bytearray(resp.read()), dtype="uint8")
