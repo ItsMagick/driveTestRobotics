@@ -1,7 +1,7 @@
 {
     "__comment1": "Obtain these values via Roboflow",
     "ROBOFLOW_API_KEY": "pGEglITMJKY2cdmWPO5a",
-    "ROBOFLOW_MODEL": "human-3zoj7",
+    "ROBOFLOW_MODEL": "human-3zoj7/1",
     "ROBOFLOW_SIZE": 416,
 
     "__comment2": "The following are only needed for infer-async.py",

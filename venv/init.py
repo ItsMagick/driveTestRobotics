@@ -19,7 +19,7 @@ class Main:
         self.controller = xbox_controller.XboxController()
         self.ledControl = led_control.LedControl()
         self.voice_rec = voice_recording.VoiceRecording()
-        self.voice_det = voice_detection.VoiceDetection()
+        self.voice_det = voice_detection.VoiceDetection(self.movement)
         self.mode = "stop"
         self.ledControl.set_red()
         print('Ready for input')

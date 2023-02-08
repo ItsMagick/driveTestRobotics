@@ -1,5 +1,5 @@
 import json
-with open('roboflow_config.json') as f:
+with open('venv/camera/roboflow_config.json') as f:
     config = json.load(f)
 
     ROBOFLOW_API_KEY = config["ROBOFLOW_API_KEY"]
@@ -18,7 +18,7 @@ import time
 # Construct the Roboflow Infer URL
 # (if running locally replace https://detect.roboflow.com/ with eg http://127.0.0.1:9001/)
 upload_url = "".join([
-    "localhost:9001/",
+    "http://127.0.0.1:9001/",
     ROBOFLOW_MODEL,
     "?api_key=",
     ROBOFLOW_API_KEY,
@@ -27,10 +27,11 @@ upload_url = "".join([
 ])
 
 # Get webcam interface via opencv-python
-video = cv2.VideoCapture(0)
+video = cv2.VideoCapture(2)
 
 # Infer via the Roboflow Infer API and return the result
 def infer():
+    print('Stream is open: ' + str(video.isOpened()))
     # Get the current image from the webcam
     ret, img = video.read()
 
@@ -48,6 +49,8 @@ def infer():
         "Content-Type": "application/x-www-form-urlencoded"
     }, stream=True).raw
 
+    print(resp.read())
+
     # Parse result image
     image = np.asarray(bytearray(resp.read()), dtype="uint8")
     image = cv2.imdecode(image, cv2.IMREAD_COLOR)
@@ -64,9 +67,10 @@ while 1:
     start = time.time()
 
     # Synchronously get a prediction from the Roboflow Infer API
-    image = infer()
-    # And display the inference results
-    cv2.imshow('image', image)
+    if video.isOpened():
+        image = infer()
+        # And display the inference results
+        cv2.imshow('image', image)
 
     # Print frames per second
     print((1/(time.time()-start)), " fps")
