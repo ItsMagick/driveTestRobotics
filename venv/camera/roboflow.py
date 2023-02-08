@@ -14,14 +14,13 @@ import base64
 import numpy as np
 import requests
 import time
-import io
 
 # Construct the Roboflow Infer URL
 # (if running locally replace https://detect.roboflow.com/ with eg http://127.0.0.1:9001/)
 parts = []
 url_base = 'http://127.0.0.1:9001/'
 endpoint = ROBOFLOW_MODEL
-access_token = '?access_token='+ROBOFLOW_API_KEY
+access_token = '?api_key='+ROBOFLOW_API_KEY
 format = '&format=json'
 confidence = '&confidence=10'
 stroke='&stroke=5'
@@ -33,14 +32,14 @@ parts.append(confidence)
 parts.append(stroke)
 url = ''.join(parts)
 
-# upload_url = "".join([
-#     "http://127.0.0.1:9001/",
-#     ROBOFLOW_MODEL,
-#     "?api_key=",
-#     ROBOFLOW_API_KEY,
-#     "&format=image",
-#     "&stroke=5"
-# ])
+upload_url = "".join([
+    "http://127.0.0.1:9001/",
+    ROBOFLOW_MODEL,
+    "?api_key=",
+    ROBOFLOW_API_KEY,
+    "&format=image",
+    "&stroke=5"
+])
 
 # Get webcam interface via opencv-python
 video = cv2.VideoCapture(2)
@@ -59,20 +58,23 @@ def infer():
     # Encode image to base64 string
     retval, buffer = cv2.imencode('.jpg', img)
     img_str = base64.b64encode(buffer)
-    img_str = img_str.decode("ascii")
+    #img_str = img_str.decode("ascii")
 
     # Get prediction from Roboflow Infer API
-    #resp = requests.post(upload_url, data=img_str, headers={
-    #    "Content-Type": "application/x-www-form-urlencoded"
-    #}, stream=True).raw
+    r = requests.post(url, data=img_str, headers={
+        "Content-Type": "application/x-www-form-urlencoded",
+        "accept": "application/json"
+    }, stream=True)
 
-    headers = {"accept": "application/json"}
-    start = time.time()
-    resp = requests.post(url, data=img_str, headers=headers)
-    print('post took ' + str(time.time() - start))
+    print('RESPONSE: ' + str(r.content))
 
-    print(resp.json())
-    preds = resp.json()
+    #headers = {"accept": "application/json"}
+    #start = time.time()
+    #resp = requests.post(url, data=img_str, headers=headers, stream=True)
+    #print('post took ' + str(time.time() - start))
+
+    #print('RESPONSE: ' + str(resp))
+    preds = r.json()
     detections = preds['predictions']
 
     # Parse result image
@@ -101,4 +103,4 @@ print((1/(time.time()-start)), " fps")
 
 # Release resources when finished
 video.release()
-#cv2.destroyAllWindows()
+cv2.destroyAllWindows()
