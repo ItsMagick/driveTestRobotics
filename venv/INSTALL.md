@@ -52,3 +52,8 @@ pip instlal pycocotools
 pip install imageAI
 
 pip install tk
+
+
+sudo apt install zsh -y
+sudo apt install curl
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/AssemblyAI/assemblyai-cli/main/install.sh)"
