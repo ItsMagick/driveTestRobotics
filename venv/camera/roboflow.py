@@ -14,6 +14,7 @@ import base64
 import numpy as np
 import requests
 import time
+import io
 
 # Construct the Roboflow Infer URL
 # (if running locally replace https://detect.roboflow.com/ with eg http://127.0.0.1:9001/)
@@ -41,15 +42,21 @@ def infer():
     img = cv2.resize(img, (round(scale * width), round(scale * height)))
 
     # Encode image to base64 string
-    retval, buffer = cv2.imencode('.jpg', img)
-    img_str = base64.b64encode(buffer)
+    #retval, buffer = cv2.imencode('.jpg', img)
+    #img_str = base64.b64encode(buffer)
+
+    buffered = io.BytesIO()
+    img.convert("RGB")
+    img.save(buffered, quality=90, format="JPEG")
+    img_str = base64.b64encode(buffered.getvalue())
+    img_str = img_str.decode("ascii")
 
     # Get prediction from Roboflow Infer API
     #resp = requests.post(upload_url, data=img_str, headers={
     #    "Content-Type": "application/x-www-form-urlencoded"
     #}, stream=True).raw
 
-    headers = {'accept': 'application/json'}
+    headers = {"accept": "application/json"}
     start = time.time()
     resp = requests.post(upload_url, data=img_str, headers=headers)
     print('post took ' + str(time.time() - start))
