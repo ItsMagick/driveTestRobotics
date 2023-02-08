@@ -45,9 +45,14 @@ def infer():
     img_str = base64.b64encode(buffer)
 
     # Get prediction from Roboflow Infer API
-    resp = requests.post(upload_url, data=img_str, headers={
-        "Content-Type": "application/x-www-form-urlencoded"
-    }, stream=True).raw
+    #resp = requests.post(upload_url, data=img_str, headers={
+    #    "Content-Type": "application/x-www-form-urlencoded"
+    #}, stream=True).raw
+
+    headers = {'accept': 'application/json'}
+    start = time.time()
+    resp = requests.post(upload_url, data=img_str, headers=headers)
+    print('post took ' + str(time.time() - start))
 
     print(resp.json())
     preds = resp.json()
