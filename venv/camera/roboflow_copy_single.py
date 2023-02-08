@@ -73,6 +73,39 @@ def infer():
 
     imgdata = base64.b64decode(img_str)
     filename = 'some_image.jpg'  # I assume you have a way of picking unique filenames
+    with open(filename, 'wb') as f:
+        f.write(imgdata)
+        image2 = Image.open(filename)
+
+        draw = ImageDraw.Draw(image2)
+        font = ImageFont.load_default()
+
+        for box in detections:
+            color = "#4892EA"
+            x1 = box['x'] - box['width'] / 2
+            x2 = box['x'] + box['width'] / 2
+            y1 = box['y'] - box['height'] / 2
+            y2 = box['y'] + box['height'] / 2
+
+            draw.rectangle([
+                x1, y1, x2, y2
+            ], outline=color, width=5)
+
+            if True:
+                text = box['class']
+                text_size = font.getbbox(text)
+
+                # set button size + 10px margins
+                button_size = (text_size[0] + 20, text_size[1] + 20)
+                button_img = Image.new('RGBA', button_size, color)
+                # put text on button with 10px margins
+                button_draw = ImageDraw.Draw(button_img)
+                button_draw.text((10, 10), text, font=font, fill=(255, 255, 255, 255))
+
+                # put button on source image in position (0, 0)
+                image2.paste(button_img, (int(x1), int(y1)))
+        image2.show()
+
     # Parse result image
     #image = np.asarray(bytearray(resp.read()), dtype="uint8")
     #image = cv2.imdecode(image, cv2.IMREAD_COLOR)
@@ -80,16 +113,16 @@ def infer():
     return img
 
 # Main loop; infers sequentially until you press "q"
-while 1:
+#while 1:
     # On "q" keypress, exit
-    if(cv2.waitKey(1) == ord('q')):
-        break
+    #if(cv2.waitKey(1) == ord('q')):
+        #break
 
     # Capture start time to calculate fps
-    start = time.time()
+start = time.time()
 
     # Synchronously get a prediction from the Roboflow Infer API
-    if video.isOpened():
+if video.isOpened():
         image = infer()
         # And display the inference results
         cv2.imshow('image', image)
