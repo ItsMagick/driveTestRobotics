@@ -42,13 +42,8 @@ def infer():
     img = cv2.resize(img, (round(scale * width), round(scale * height)))
 
     # Encode image to base64 string
-    #retval, buffer = cv2.imencode('.jpg', img)
-    #img_str = base64.b64encode(buffer)
-
-    buffered = io.BytesIO()
-    img.convert("RGB")
-    img.save(buffered, quality=90, format="JPEG")
-    img_str = base64.b64encode(buffered.getvalue())
+    retval, buffer = cv2.imencode('.jpg', img)
+    img_str = base64.b64encode(buffer)
     img_str = img_str.decode("ascii")
 
     # Get prediction from Roboflow Infer API
@@ -72,22 +67,22 @@ def infer():
     return img
 
 # Main loop; infers sequentially until you press "q"
-while 1:
+#while 1:
     # On "q" keypress, exit
-    if(cv2.waitKey(1) == ord('q')):
-        break
+    #if(cv2.waitKey(1) == ord('q')):
+        #break
 
     # Capture start time to calculate fps
-    start = time.time()
+start = time.time()
 
     # Synchronously get a prediction from the Roboflow Infer API
-    if video.isOpened():
+if video.isOpened():
         image = infer()
         # And display the inference results
         cv2.imshow('image', image)
 
     # Print frames per second
-    print((1/(time.time()-start)), " fps")
+print((1/(time.time()-start)), " fps")
 
 # Release resources when finished
 video.release()
