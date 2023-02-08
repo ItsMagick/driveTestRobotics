@@ -1,5 +1,5 @@
 import json
-with open('venv/camera/roboflow_config.json') as f:
+with open('/home/herbie/Documents/driveTestRobotics/venv/camera/roboflow_config.json') as f:
     config = json.load(f)
 
     ROBOFLOW_API_KEY = config["ROBOFLOW_API_KEY"]
@@ -38,7 +38,7 @@ class CameraDetection(object):
                 if self.active:
                     if self.video.isOpened():
                         prediction = self.snapshot()
-                        logging.debug("New prediction", prediction)
+                        print(prediction)
 
         except Exception as e:
             print(e)
