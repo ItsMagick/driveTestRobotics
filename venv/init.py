@@ -40,8 +40,6 @@ class Main:
                 self.mode = "controller"
                 self.ledControl.set_green()
 
-            print("Mode:" + self.mode)
-
             if self.mode == "stop":
                 self.motor.set_speed(0)
                 if self.controller.Back == 1:

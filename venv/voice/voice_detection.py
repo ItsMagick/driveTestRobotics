@@ -30,19 +30,21 @@ class VoiceDetection:
                         print("Is Voice")
                         print(self.tuner.direction)
 
-                        degree = 0.0
+                        degree = self.tuner.direction
 
                         if degree < 45.0 or degree > 270.0:
                             print("Is already in front of source")
                         elif 45 <= degree < 135:
-                            print("Rotate right")
-                            self.movement.move_car_right()
+                            print("Rotate left")
+                            self.movement.move_car_left()
                         elif 135 <= degree < 225:
                             print("Reverse")
                             self.movement.move_car_reverse()
                         elif 225 <= degree < 270:
-                            print("Rotate left")
-                            self.movement.move_car_left()
+                            print("Rotate right")
+                            self.movement.move_car_right()
+
+                        time.sleep(5)
 
         except Exception as e:
             print(e)

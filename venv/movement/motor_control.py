@@ -27,11 +27,9 @@ class MotorControl:
             if direction > 0:
                 angle = 90 - (direction * 50)
             self.servo.angle = angle
-            print('Set angle', angle)
 
     def set_speed(self, speed):
         if (speed >= -1.0) & (speed <= 1.0):
-            print('Set throttle', speed)
             if speed == 0:
                 self.motor.throttle = 0
             if speed < 0:
