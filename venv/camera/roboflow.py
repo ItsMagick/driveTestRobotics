@@ -49,13 +49,15 @@ def infer():
         "Content-Type": "application/x-www-form-urlencoded"
     }, stream=True).raw
 
-    print(resp.read())
+    print(resp.json())
+    preds = resp.json()
+    detections = preds['predictions']
 
     # Parse result image
-    image = np.asarray(bytearray(resp.read()), dtype="uint8")
-    image = cv2.imdecode(image, cv2.IMREAD_COLOR)
+    #image = np.asarray(bytearray(resp.read()), dtype="uint8")
+    #image = cv2.imdecode(image, cv2.IMREAD_COLOR)
 
-    return image
+    return img
 
 # Main loop; infers sequentially until you press "q"
 while 1:
