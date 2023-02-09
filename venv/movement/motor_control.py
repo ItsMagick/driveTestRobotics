@@ -29,16 +29,17 @@ class MotorControl(object):
             self.servo.angle = angle
 
     def set_speed(self, speed):
+        reduction_factor = 4
         if (speed >= -1.0) & (speed <= 1.0):
             if speed == 0:
                 self.motor.throttle = 0
             if speed < 0:
-                self.motor.throttle = -1
+                self.motor.throttle = -1 / reduction_factor
                 time.sleep(1/10)
                 self.motor.throttle = 0
                 time.sleep(1/10)
-                self.motor.throttle = speed
+                self.motor.throttle = speed / reduction_factor
             if speed > 0:
-                self.motor.throttle = speed
+                self.motor.throttle = speed / reduction_factor
 
 
