@@ -27,7 +27,7 @@ class CameraDetection(object):
         self.url = None
         self.upload_url = None
         self.define_urls()
-        self.video = cv2.VideoCapture(1) #Attention: This index need adjustments, based on the current connected cameras
+        self.video = cv2.VideoCapture(2) #Attention: This index need adjustments, based on the current connected cameras
 
     def start(self):
         self.active = True
