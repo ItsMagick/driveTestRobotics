@@ -27,7 +27,7 @@ class CameraDetection(object):
         self.url = None
         self.upload_url = None
         self.define_urls()
-        self.video = cv2.VideoCapture(2)
+        self.video = cv2.VideoCapture(1) #Attention: This index need adjustments, based on the current connected cameras
 
     def start(self):
         self.active = True
@@ -37,8 +37,8 @@ class CameraDetection(object):
             while True:
                 if self.active:
                     if self.video.isOpened():
-                        prediction = self.snapshot()
-                        print(prediction)
+                        snapshot = self.snapshot()
+                        self.handle_snapshot(snapshot)
 
         except Exception as e:
             print(e)
@@ -93,4 +93,25 @@ class CameraDetection(object):
             "accept": "application/json"
         }, stream=True)
 
-        return r.content
+        return r
+
+    def handle_snapshot(self, snapshot):
+        obj = snapshot.json()
+        predictions = obj["predictions"]
+        imageHeight = obj["image"]["height"]
+        imageWidth = obj["image"]["width"]
+        if predictions != None:
+            for pred in predictions:
+                confidence = pred["confidence"]
+                x = pred["x"]
+                y = pred["y"]
+                height = pred["height"]
+                width = pred["width"]
+                if confidence > 0.6:
+                    print("I see a person with confidence " + str(confidence))
+                    self.move_for_prediction(x, y, width, height)
+
+    def move_for_prediction(self, x, y, width, height):
+        print(x,y,width,height)
+        
+
