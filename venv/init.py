@@ -65,13 +65,11 @@ class Main(object):
             if self.mode == "voice":
                 self.voice_det.start()
             else:
-                self.voice_det.kill()
                 self.voice_det = None
 
             if self.mode == "camera":
                 self.camera_det.start()
             else:
-                self.camera_det.kill()
                 self.camera_det = None
 
             if self.mode == "controller":
