@@ -9,7 +9,6 @@ from controller import xbox_controller
 from led import led_control
 from movement import movement_control
 from movement import motor_control
-from voice import voice_recording
 from voice import voice_detection
 from camera import camera_detection
 
@@ -17,13 +16,17 @@ from camera import camera_detection
 class Main(object):
 
     def __init__(self):
+        # Unscheduled modules
         self.motor = motor_control.MotorControl()
         self.movement = movement_control.MovementControl(self.motor)
-        self.controller = xbox_controller.XboxController()
         self.ledControl = led_control.LedControl()
-        self.voice_rec = voice_recording.VoiceRecording()
-        self.voice_det = voice_detection.VoiceDetection(self.movement)
-        self.camera_det = camera_detection.CameraDetection(self.movement)
+
+        # Scheduled modules
+        self.controller = xbox_controller.XboxController()
+        self.voice_det = None
+        self.camera_det = None
+
+
         self.mode = "stop"
         self.ledControl.set_red()
         print('Ready for input')
@@ -40,12 +43,14 @@ class Main(object):
             if self.controller.X == 1:
                 self.mode = "voice"
                 self.ledControl.set_voice()
+                self.voice_det = voice_detection.VoiceDetection(self.movement)
             if self.controller.Y == 1:
                 self.mode = "controller"
                 self.ledControl.set_yellow()
             if self.controller.A == 1:
                 self.mode = "camera"
                 self.ledControl.set_green()
+                self.camera_det = camera_detection.CameraDetection(self.movement)
 
             if self.mode == "stop":
                 self.motor.set_speed(0)
@@ -61,11 +66,13 @@ class Main(object):
                 self.voice_det.start()
             else:
                 self.voice_det.kill()
+                self.voice_det = None
 
             if self.mode == "camera":
                 self.camera_det.start()
             else:
                 self.camera_det.kill()
+                self.camera_det = None
 
             if self.mode == "controller":
                 self.controller_observer()
