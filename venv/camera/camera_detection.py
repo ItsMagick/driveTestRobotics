@@ -140,6 +140,7 @@ class CameraDetection(object):
             self.motor.set_speed(0)
         else: 
             calcRelSpeed = (1-prozYP) / 0,55 
-            self.motor.set_speed()
-        self.motor.set_speed(0.5)
+            self.motor.set_speed(calcRelSpeed)
     
+    def move_stay(self):
+        self.motor.set_speed(0)
