@@ -70,7 +70,7 @@ def infer():
 
     preds = r.json()
     detections = preds['predictions']
-
+ 
     imgdata = base64.b64decode(img_str)
     filename = 'some_image.jpg'  # I assume you have a way of picking unique filenames
     # Parse result image

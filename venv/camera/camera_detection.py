@@ -1,4 +1,5 @@
 import json
+
 with open('/home/herbie/Documents/driveTestRobotics/venv/camera/roboflow_config.json') as f:
     config = json.load(f)
 
@@ -15,8 +16,9 @@ import requests
 import threading
 class CameraDetection(object):
 
-    def __init__(self, movement):
+    def __init__(self, movement, motor):
         self.movement = movement
+        self.motor = motor
 
         self.active = False
 
@@ -73,6 +75,11 @@ class CameraDetection(object):
             "&stroke=5"
         ])
 
+    def sortoutInvalidPersons(self, predication, imageHeight, imageWidth):
+        isFullWidth = imageWidth - 20 < predication["width"]
+        isFullHeight = imageHeight - 20 < predication["height"]
+        return not (isFullHeight and isFullWidth)
+        
 
     def snapshot(self):
         # Get the current image from the webcam
@@ -101,17 +108,38 @@ class CameraDetection(object):
         imageHeight = obj["image"]["height"]
         imageWidth = obj["image"]["width"]
         if predictions != None:
+            maxConfidence = 0
+            chosenPredication = None
             for pred in predictions:
-                confidence = pred["confidence"]
-                x = pred["x"]
-                y = pred["y"]
-                height = pred["height"]
-                width = pred["width"]
-                if confidence > 0.6:
-                    print("I see a person with confidence " + str(confidence))
-                    self.move_for_prediction(x, y, width, height)
+                if self.sortoutInvalidPersons(pred, imageHeight, imageWidth):
+                    confidence = pred["confidence"]
+                    x = pred["x"]
+                    y = pred["y"]
+                    height = pred["height"]
+                    width = pred["width"]
+                    if confidence > 0.6:
+                        if confidence > maxConfidence:
+                            maxConfidence = confidence
+                            chosenPredication = pred
+            if chosenPredication != None:
+                print("--------------------")
+                print("I see a person with confidence " + str(maxConfidence))
+                self.move_for_prediction(chosenPredication["x"], chosenPredication["y"], chosenPredication["width"], chosenPredication["height"], imageWidth, imageHeight)
 
-    def move_for_prediction(self, x, y, width, height):
+    def move_for_prediction(self, x, y, width, height, frameWidth, frameHeight):
         print(x,y,width,height)
-        
+        #person detected
+        #Center of person
+        prozXP = x / frameWidth
+        prozYP = y / frameHeight
 
+        print("Prozentuale Pos. X: ", prozXP)
+        print("Prozentuale Pos. Y: ", prozYP)
+
+        if prozYP <= 0.55:
+            self.motor.set_speed(0)
+        else: 
+            calcRelSpeed = (1-prozYP) / 0,55 
+            self.motor.set_speed()
+        self.motor.set_speed(0.5)
+    
