@@ -44,7 +44,7 @@ class VoiceDetection(object):
                             print("Rotate right")
                             self.movement.move_car_right()
 
-                        time.sleep(5)
+                        time.sleep(1.5)
 
         except Exception as e:
             print(e)

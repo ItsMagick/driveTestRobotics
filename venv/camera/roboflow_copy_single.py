@@ -43,7 +43,7 @@ upload_url = "".join([
 ])
 
 # Get webcam interface via opencv-python
-video = cv2.VideoCapture(1)
+video = cv2.VideoCapture(2)
 
 
 # Infer via the Roboflow Infer API and return the result
