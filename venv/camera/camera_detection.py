@@ -47,6 +47,7 @@ class CameraDetection(object):
 
     def kill(self):
         self.active = False
+        self._monitor_thread = None
 
     def define_urls(self):
         parts = []
@@ -113,5 +114,5 @@ class CameraDetection(object):
 
     def move_for_prediction(self, x, y, width, height):
         print(x,y,width,height)
-        
+
 

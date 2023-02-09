@@ -53,3 +53,4 @@ class VoiceDetection(object):
 
     def kill(self):
         self.active = False
+        self._monitor_thread = None
