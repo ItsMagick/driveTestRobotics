@@ -1,5 +1,5 @@
 import json
-with open('venv/camera/roboflow_config.json') as f:
+with open('venv/camera/roboflow_config2.json') as f:
     config = json.load(f)
 
     ROBOFLOW_API_KEY = config["ROBOFLOW_API_KEY"]
