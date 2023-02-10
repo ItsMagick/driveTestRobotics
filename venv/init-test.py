@@ -9,7 +9,7 @@ class MainTest(object):
 
     def __init__(self):
         self.ledControl = led_control.LedControl()
-        self.camera_det = camera_detection.CameraDetection(None)
+        self.camera_det = camera_detection.CameraDetection(None, None)
         self.mode = "camera"
         print('Started Dev Setup')
         futures = [self.remote_car_control()]

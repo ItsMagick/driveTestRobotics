@@ -126,6 +126,8 @@ class CameraDetection(object):
                 print("--------------------")
                 print("I see a person with confidence " + str(maxConfidence))
                 self.move_for_prediction(chosenPredication["x"], chosenPredication["y"], chosenPredication["width"], chosenPredication["height"], imageWidth, imageHeight)
+            else: self.move_stay()
+        else: self.move_stay()
 
     def move_for_prediction(self, x, y, width, height, frameWidth, frameHeight):
         print(x,y,width,height)
@@ -140,8 +142,9 @@ class CameraDetection(object):
         if prozYP <= 0.55:
             self.motor.set_speed(0)
         else:
-            calcRelSpeed = (1-prozYP) / 0,55
-            self.motor.set_speed(calcRelSpeed)
+            calcRelSpeed = 1 - ((1-prozYP) / 0.55 + 0.4)
+            print("Speed: ", prozYP)
+            self.motor.set_speed(prozYP)
 
     def move_stay(self):
         self.motor.set_speed(0)

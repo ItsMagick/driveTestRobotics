@@ -50,7 +50,7 @@ class Main(object):
             if self.controller.A == 1:
                 self.mode = "camera"
                 self.ledControl.set_green()
-                self.camera_det = camera_detection.CameraDetection(self.movement)
+                self.camera_det = camera_detection.CameraDetection(self.movement, self.motor)
 
             if self.mode == "stop":
                 self.motor.set_speed(0)
