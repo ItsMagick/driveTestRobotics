@@ -3,8 +3,8 @@
 import asyncio
 import time
 import os
-import logging
 import threading
+from datetime import datetime, timedelta
 
 from controller import xbox_controller
 from led import led_control
@@ -27,7 +27,9 @@ class Main(object):
         self.voice_det = voice_detection.VoiceDetection(self.movement)
         self.camera_det = camera_detection.CameraDetection(self.movement, self.motor)
 
-        self._monitor_thread = threading.Thread(target=self.threadObserver, args=())
+        self.last_person_seen = None
+
+        self._monitor_thread = threading.Thread(target=self.thread_observer, args=())
         self._monitor_thread.daemon = True
         self._monitor_thread.start()
 
@@ -73,6 +75,7 @@ class Main(object):
                 self.camera_det.start()
             else:
                 self.camera_det.kill()
+                self.last_person_seen = None
 
             if self.mode == "controller":
                 self.controller_observer()
@@ -87,11 +90,21 @@ class Main(object):
 
             await asyncio.sleep(0.1)
 
-    def threadObserver(self):
+    def thread_observer(self):
         while True:
-            self.voice_det.on_thread_call()
-            self.camera_det.on_thread_call()
+            if self.voice_det.on_thread_call():
+                # Has preformed action
+                self.mode = "camera"
+                self.ledControl.set_green()
 
+            if self.camera_det.on_thread_call():
+                # Has seen person on current call
+                self.last_person_seen = datetime.now()
+
+            if self.last_person_seen is not None:
+                if datetime.now() > (self.last_person_seen + timedelta(seconds=3)):
+                    self.mode = "voice"
+                    self.ledControl.set_voice()
 
     def controller_observer(self):
         if self.controller.LeftTrigger > 0:

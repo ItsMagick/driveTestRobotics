@@ -27,7 +27,7 @@ class CameraDetection(object):
         self.upload_url = None
         self.define_urls()
         self.video = cv2.VideoCapture(0) #Attention: This index need adjustments, based on the current connected cameras
-        
+
     def start(self):
         self.active = True
 
@@ -36,7 +36,7 @@ class CameraDetection(object):
             if self.active:
                 if self.video.isOpened():
                     snapshot = self.snapshot()
-                    self.handle_snapshot(snapshot)
+                    return self.handle_snapshot(snapshot)  # True if person was seen
 
         except Exception as e:
             print(e)
@@ -119,8 +119,10 @@ class CameraDetection(object):
                 print("--------------------")
                 print("I see a person with confidence " + str(maxConfidence))
                 self.move_for_prediction(chosenPredication["x"], chosenPredication["y"], chosenPredication["width"], chosenPredication["height"], imageWidth, imageHeight)
+                return True  # Return true because a person was seen in snapshot
             else: self.move_stay()
         else: self.move_stay()
+        return False  # Return false because no person was found in snapshot
 
     def move_for_prediction(self, x, y, width, height, frameWidth, frameHeight):
         print(x,y,width,height)
@@ -148,6 +150,6 @@ class CameraDetection(object):
                 calcSteering = -1.0
             print("Steering: ", calcSteering)
             self.motor.set_direction(calcSteering)
-            
+
     def move_stay(self):
         self.motor.set_speed(0)
