@@ -1,6 +1,6 @@
 import json
 
-with open('/home/herbie/Documents/driveTestRobotics/venv/camera/roboflow_config.json') as f:
+with open('/home/herbie/Documents/driveTestRobotics/venv/camera/roboflow_config2.json') as f:
     config = json.load(f)
 
     ROBOFLOW_API_KEY = config["ROBOFLOW_API_KEY"]
@@ -26,7 +26,7 @@ class CameraDetection(object):
         self.url = None
         self.upload_url = None
         self.define_urls()
-        self.video = cv2.VideoCapture(2) #Attention: This index need adjustments, based on the current connected cameras
+        self.video = cv2.VideoCapture(0) #Attention: This index need adjustments, based on the current connected cameras
         
     def start(self):
         self.active = True
@@ -111,7 +111,7 @@ class CameraDetection(object):
                     y = pred["y"]
                     height = pred["height"]
                     width = pred["width"]
-                    if confidence > 0.8:
+                    if confidence > 0.4:
                         if confidence > maxConfidence:
                             maxConfidence = confidence
                             chosenPredication = pred
@@ -132,7 +132,7 @@ class CameraDetection(object):
         print("Prozentuale Pos. X: ", prozXP)
         print("Prozentuale Pos. Y: ", prozYP)
 
-        if prozYP <= 0.55:
+        if prozYP <= 0.5:
             self.motor.set_speed(0)
         else:
             #Calc speed

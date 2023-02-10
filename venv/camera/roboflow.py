@@ -47,7 +47,7 @@ video = cv2.VideoCapture(0)
 
 # Infer via the Roboflow Infer API and return the result
 def infer():
-    print('Stream is open: ' + str(video.isOpened()))
+    #print('Stream is open: ' + str(video.isOpened()))
     # Get the current image from the webcam
     ret, img = video.read()
 
@@ -66,7 +66,7 @@ def infer():
         "accept": "application/json"
     }, stream=True)
 
-    print('RESPONSE: ' + str(r.content))
+    #print('RESPONSE: ' + str(r.content))
 
     preds = r.json()
     predictions = preds['predictions']
