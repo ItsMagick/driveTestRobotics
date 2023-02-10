@@ -43,7 +43,7 @@ upload_url = "".join([
 ])
 
 # Get webcam interface via opencv-python
-video = cv2.VideoCapture(2)
+video = cv2.VideoCapture(0)
 
 # Infer via the Roboflow Infer API and return the result
 def infer():
@@ -69,8 +69,13 @@ def infer():
     print('RESPONSE: ' + str(r.content))
 
     preds = r.json()
-    detections = preds['predictions']
+    predictions = preds['predictions']
+
+    imageHeight = preds["image"]["height"]
+    imageWidth = preds["image"]["width"]
  
+    test_movement(predictions, imageHeight, imageWidth)
+
     imgdata = base64.b64decode(img_str)
     filename = 'some_image.jpg'  # I assume you have a way of picking unique filenames
     # Parse result image
@@ -78,6 +83,49 @@ def infer():
     #image = cv2.imdecode(image, cv2.IMREAD_COLOR)
 
     return img
+
+def test_movement(predictions, imageHeight, imageWidth):
+    if predictions != None:
+            maxConfidence = 0
+            chosenPredication = None
+            for pred in predictions:
+                if sortoutInvalidPersons(pred, imageHeight, imageWidth):
+                    confidence = pred["confidence"]
+                    x = pred["x"]
+                    y = pred["y"]
+                    height = pred["height"]
+                    width = pred["width"]
+                    if confidence > 0.6:
+                        if confidence > maxConfidence:
+                            maxConfidence = confidence
+                            chosenPredication = pred
+            if chosenPredication != None:
+                print("\n--------------------")
+                print("I see a person with confidence " + str(maxConfidence))
+                move_for_prediction(chosenPredication["x"], chosenPredication["y"], chosenPredication["width"], chosenPredication["height"], imageWidth, imageHeight)
+
+def move_for_prediction(x, y, width, height, frameWidth, frameHeight):
+        print(x,y,width,height)
+        #person detected
+        #Center of person
+        prozXP = x / frameWidth
+        prozYP = y / frameHeight
+
+        print("Prozentuale Pos. X: ", prozXP)
+        print("Prozentuale Pos. Y: ", prozYP)
+
+        if prozYP > 0.55:
+            #Calc speed
+            print("Speed: ", prozYP)
+
+            #Calc steering
+            calcSteering = (prozXP - 0.5) * 2
+            print("Steering: ", calcSteering)
+
+def sortoutInvalidPersons(predication, imageHeight, imageWidth):
+        isFullWidth = imageWidth - 20 < predication["width"]
+        isFullHeight = imageHeight - 20 < predication["height"]
+        return not (isFullHeight and isFullWidth)
 
 # Main loop; infers sequentially until you press "q"
 while 1:
