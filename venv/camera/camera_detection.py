@@ -22,10 +22,6 @@ class CameraDetection(object):
 
         self.active = False
 
-        self._monitor_thread = threading.Thread(target=self._run_Observer, args=())
-        self._monitor_thread.daemon = True
-        self._monitor_thread.start()
-
         self.url = None
         self.upload_url = None
         self.define_urls()
@@ -34,22 +30,18 @@ class CameraDetection(object):
     def start(self):
         self.active = True
 
-    def _run_Observer(self):
+    def on_thread_call(self):
         try:
-            while True:
-                if self.active:
-                    if self.video.isOpened():
-                        snapshot = self.snapshot()
-                        self.handle_snapshot(snapshot)
+            if self.active:
+                if self.video.isOpened():
+                    snapshot = self.snapshot()
+                    self.handle_snapshot(snapshot)
 
         except Exception as e:
             print(e)
-        finally:
-            self.kill()
 
     def kill(self):
         self.active = False
-        self._monitor_thread = None
 
     def define_urls(self):
         parts = []

@@ -4,6 +4,7 @@ import asyncio
 import time
 import os
 import logging
+import threading
 
 from controller import xbox_controller
 from led import led_control
@@ -23,9 +24,12 @@ class Main(object):
 
         # Scheduled modules
         self.controller = xbox_controller.XboxController()
-        self.voice_det = None
-        self.camera_det = None
+        self.voice_det = voice_detection.VoiceDetection(self.movement)
+        self.camera_det = camera_detection.CameraDetection(self.movement, self.motor)
 
+        self._monitor_thread = threading.Thread(target=self.threadObserver(), args=())
+        self._monitor_thread.daemon = True
+        self._monitor_thread.start()
 
         self.mode = "stop"
         self.ledControl.set_red()
@@ -43,14 +47,12 @@ class Main(object):
             if self.controller.X == 1:
                 self.mode = "voice"
                 self.ledControl.set_voice()
-                self.voice_det = voice_detection.VoiceDetection(self.movement)
             if self.controller.Y == 1:
                 self.mode = "controller"
                 self.ledControl.set_yellow()
             if self.controller.A == 1:
                 self.mode = "camera"
                 self.ledControl.set_green()
-                self.camera_det = camera_detection.CameraDetection(self.movement, self.motor)
 
             if self.mode == "stop":
                 self.motor.set_speed(0)
@@ -65,16 +67,12 @@ class Main(object):
             if self.mode == "voice":
                 self.voice_det.start()
             else:
-                if self.voice_det is not None:
-                    self.voice_det.kill()
-                    self.voice_det = None
+                self.voice_det.kill()
 
             if self.mode == "camera":
                 self.camera_det.start()
             else:
-                if self.camera_det is not None:
-                    self.camera_det.kill()
-                    self.camera_det = None
+                self.camera_det.kill()
 
             if self.mode == "controller":
                 self.controller_observer()
@@ -88,6 +86,12 @@ class Main(object):
             # key_observer()
 
             await asyncio.sleep(0.1)
+
+    def threadObserver(self):
+        while True:
+            self.voice_det.on_thread_call()
+            self.camera_det.on_thread_call()
+
 
     def controller_observer(self):
         if self.controller.LeftTrigger > 0:
