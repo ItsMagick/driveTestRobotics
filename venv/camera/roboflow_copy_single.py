@@ -43,7 +43,9 @@ upload_url = "".join([
 ])
 
 # Get webcam interface via opencv-python
-video = cv2.VideoCapture(2)
+video = cv2.VideoCapture(0)
+#video = cv2.VideoCapture("usb-Intel_R__RealSense_TM__Depth_Camera_435_Intel_R__RealSense_TM__Depth_Camera_435_034523022752-video-index1") #Attention: This index need adjustments, based on the current connected cameras
+#video.open("usb-Intel_R__RealSense_TM__Depth_Camera_435_Intel_R__RealSense_TM__Depth_Camera_435_034523022752-video-index0")
 
 
 # Infer via the Roboflow Infer API and return the result

@@ -29,8 +29,8 @@ class CameraDetection(object):
         self.url = None
         self.upload_url = None
         self.define_urls()
-        self.video = cv2.VideoCapture(2) #Attention: This index need adjustments, based on the current connected cameras
-
+        self.video = cv2.VideoCapture(0) #Attention: This index need adjustments, based on the current connected cameras
+        
     def start(self):
         self.active = True
 
@@ -142,9 +142,13 @@ class CameraDetection(object):
         if prozYP <= 0.55:
             self.motor.set_speed(0)
         else:
-            calcRelSpeed = 1 - ((1-prozYP) / 0.55 + 0.4)
+            #Calc speed
             print("Speed: ", prozYP)
             self.motor.set_speed(prozYP)
 
+            #Calc steering
+            calcSteering = (prozXP - 0.5) * 2
+            self.motor.set_direction(calcSteering)
+            
     def move_stay(self):
         self.motor.set_speed(0)
