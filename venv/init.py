@@ -80,9 +80,9 @@ class Main(object):
             if self.mode == "controller":
                 self.controller_observer()
                 if self.controller.RightJoystickX < -0.9:
-                    self.movement.move_car_left()
+                    self.movement.move_car_left(90)
                 if self.controller.RightJoystickX > 0.9:
-                    self.movement.move_car_right()
+                    self.movement.move_car_right(90)
                 if self.controller.RightJoystickY < -0.9:
                     self.movement.move_car_reverse()
 
@@ -92,16 +92,17 @@ class Main(object):
 
     def thread_observer(self):
         while True:
-            if self.voice_det.on_thread_call():
+            if self.voice_det.on_thread_call() and self.mode == "voice":  # Add double check due to threading and parallel execution
                 # Has preformed action
-                self.mode = "camera"
-                self.ledControl.set_green()
+                print("New voice round")
+                #self.mode = "camera"
+                #self.ledControl.set_green()
 
             if self.camera_det.on_thread_call():
                 # Has seen person on current call
                 self.last_person_seen = datetime.now()
 
-            if self.last_person_seen is not None:
+            if self.last_person_seen is not None and self.mode == "camera":
                 if datetime.now() > (self.last_person_seen + timedelta(seconds=3)):
                     self.mode = "voice"
                     self.ledControl.set_voice()
