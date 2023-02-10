@@ -11,6 +11,7 @@ with open('/home/herbie/Documents/driveTestRobotics/venv/camera/roboflow_config.
     BUFFER = config["BUFFER"]
 
 import cv2
+import math
 import base64
 import requests
 import threading
@@ -25,7 +26,7 @@ class CameraDetection(object):
         self.url = None
         self.upload_url = None
         self.define_urls()
-        self.video = cv2.VideoCapture(0) #Attention: This index need adjustments, based on the current connected cameras
+        self.video = cv2.VideoCapture(2) #Attention: This index need adjustments, based on the current connected cameras
         
     def start(self):
         self.active = True
@@ -110,7 +111,7 @@ class CameraDetection(object):
                     y = pred["y"]
                     height = pred["height"]
                     width = pred["width"]
-                    if confidence > 0.6:
+                    if confidence > 0.8:
                         if confidence > maxConfidence:
                             maxConfidence = confidence
                             chosenPredication = pred
@@ -139,7 +140,13 @@ class CameraDetection(object):
             self.motor.set_speed(prozYP)
 
             #Calc steering
-            calcSteering = (prozXP - 0.5) * 2
+            calcSteering = math.tanh((prozXP * 2.0) - 1.0) * 0.25
+            print("Raw-Steering: ", calcSteering)
+            if calcSteering > 1.0:
+                calcSteering = 1.0
+            if calcSteering < -1.0:
+                calcSteering = -1.0
+            print("Steering: ", calcSteering)
             self.motor.set_direction(calcSteering)
             
     def move_stay(self):
