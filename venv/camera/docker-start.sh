@@ -1,4 +1,4 @@
 #!/bin/bash
-/bin/sleep 10
+/bin/sleep 5
 docker run -d --net=host --gpus all roboflow/inference-server:jetson
-/bin/sleep 10
+/bin/sleep 3

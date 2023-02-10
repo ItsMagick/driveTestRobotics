@@ -95,7 +95,7 @@ class Main(object):
 
     def controller_observer(self):
         if self.controller.LeftTrigger > 0:
-            self.motor.set_speed(self.controller.LeftTrigger)
+            self.motor.set_speed(-self.controller.LeftTrigger)
         elif self.controller.RightTrigger > 0:
             self.motor.set_speed(self.controller.RightTrigger)
         else:
