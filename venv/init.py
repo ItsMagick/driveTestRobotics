@@ -27,7 +27,7 @@ class Main(object):
         self.voice_det = voice_detection.VoiceDetection(self.movement)
         self.camera_det = camera_detection.CameraDetection(self.movement, self.motor)
 
-        self._monitor_thread = threading.Thread(target=self.threadObserver(), args=())
+        self._monitor_thread = threading.Thread(target=self.threadObserver, args=())
         self._monitor_thread.daemon = True
         self._monitor_thread.start()
 
